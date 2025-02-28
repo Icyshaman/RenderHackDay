@@ -13,4 +13,4 @@ RUN apk update && apk add --no-cache python3 py3-pip py3-virtualenv \
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-CMD ["python", "sbot.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "sbot:app"]

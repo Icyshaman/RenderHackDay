@@ -2,11 +2,13 @@ from ibm_watsonx_ai import APIClient
 from ibm_watsonx_ai.foundation_models import ModelInference
 import spacy
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 
 class SBot:
     def __init__(self):
         self.app = Flask(__name__)
+        CORS(self.app)
         self.setup_routes()
         self.nlp = spacy.load("en_core_web_sm")
         API_KEY = os.getenv("API_KEY")
@@ -51,7 +53,7 @@ class SBot:
         return response["results"][0]["generated_text"].strip()
 
     def setup_routes(self):
-        @self.app.route("/get-intnet", methods=["POST"])
+        @self.app.route("/get-intent", methods=["POST"])
         def get_intent():
             data = request.json
             if "sentence" not in data:
@@ -67,10 +69,5 @@ class SBot:
             intent = self.classify_intent(user_input)
             return jsonify({"type": intent}), 200
     
-    def run(self, host="0.0.0.0", port=5000, debug=False):
-        self.app.run(host=host, port=port, debug=debug)
-
-# Run the chatbot
-if __name__ == "__main__":
-    sbot = SBot()
-    sbot.run()
+sbot = SBot()
+app = sbot.app
