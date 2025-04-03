@@ -1,5 +1,0 @@
-ibm-watsonx-ai==1.2.9
-spacy==3.8.4
-flask==3.1.0
-flask-cors==5.0.1
-gunicorn==23.0.0
